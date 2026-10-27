@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e11">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Track">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Track</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+(function(){var t=null;try{t=localStorage.getItem('kh_theme')}catch(e){}
+if(!t)t='dark';
+document.documentElement.setAttribute('data-theme',t);})();
+</script>
+<style>
+:root{--bg:#fff;--s:#fafafa;--s2:#f0f1f3;--ink:#1e2329;--mut:#707a8a;--line:#eaecef;--acc:#84f81a;--acct:#3d8f00;--onacc:#181a20;--up:#0ecb81;--dn:#f6465d;--hl:58%;--hi:#10201f;--pm:#f6465d;--ptm:#0ecb81;--mtp:#ff9f1a;--tmtp:#848e9c;color-scheme:light}
+:root[data-theme=dark]{--bg:#0b0e11;--s:#181a20;--s2:#1e2329;--ink:#eaecef;--mut:#848e9c;--line:#2b3139;--acct:#84f81a;--hl:40%;--hi:#fff;color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.top{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{max-width:1040px;margin:0 auto;padding:0 16px;height:60px;display:flex;align-items:center;gap:20px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:1.2rem;letter-spacing:.01em;color:var(--ink);text-decoration:none}
+nav{display:flex;gap:4px;flex:1;height:100%}
+nav button{border:0;background:none;padding:0 14px;font-weight:500;font-size:.95rem;color:var(--mut);border-bottom:2px solid transparent;height:100%}
+nav button:hover{color:var(--ink)}
+nav button.on{color:var(--ink);font-weight:600;border-bottom-color:var(--acc)}
+.acts{margin-left:auto;display:flex;gap:8px}.ib{padding:8px 10px;display:flex;align-items:center}.ib svg{width:20px;height:20px}[hidden]{display:none!important}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 100px}
+@media(max-width:720px){
+ nav{position:fixed;left:0;right:0;bottom:0;height:auto;z-index:40;background:var(--s);border-top:1px solid var(--line);padding:0 0 env(safe-area-inset-bottom,0px);gap:0}
+ nav button{flex:1;height:56px;padding:0 4px;border-bottom:0;border-top:2px solid transparent;font-size:.82rem}
+ nav button.on{border-top-color:var(--acc);color:var(--acct)}
+}
+h2{font-size:1rem;font-weight:600}
+.sub{color:var(--mut);font-size:.84rem}
+.card{background:var(--s);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:14px}
+.card>h2{margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid3 .card{margin-bottom:0}
+@media(max-width:720px){.grid3{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.stat{background:var(--s);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat span{color:var(--mut);font-size:.8rem}
+.stat b{display:block;font-size:1.7rem;font-weight:600;line-height:1.25;letter-spacing:-.01em;order:2}
+.stat{display:flex;flex-direction:column}
+.stat span{order:1}
+.stat:first-child b{color:var(--up)}
+.stat b.sm{font-size:1.05rem;padding:.4rem 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frm{display:flex;gap:8px;flex-wrap:wrap}
+input[type=text],input[type=datetime-local],input[type=date],select{background:var(--s2);border:1px solid transparent;border-radius:8px;padding:10px 12px;min-width:0}
+input:focus,select:focus{outline:0;border-color:var(--acc)}
+input[type=text]{flex:1 1 180px}
+.btn{background:var(--acc);color:var(--onacc);border:0;border-radius:8px;padding:10px 18px;font-weight:600}
+.btn:hover{filter:brightness(1.06)}
+.ghost{background:var(--s2);color:var(--ink);font-weight:500;border:1px solid var(--line)}
+.x{background:none;border:0;color:var(--mut);padding:4px 8px;border-radius:6px;font-size:1rem}
+.x:hover{color:var(--dn);background:var(--s2)}
+.mbar{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:14px}
+.mbar .btn{padding:6px 14px}
+.mbar strong{min-width:140px;text-align:center;font-weight:600}
+.scroll{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.8rem}
+th,td{padding:3px;text-align:center;white-space:nowrap}
+th{color:var(--mut);font-weight:500;padding-bottom:6px}
+th.today{color:var(--acct);font-weight:700}
+.stick{position:sticky;left:0;background:var(--s);text-align:left!important;padding:3px 10px 3px 0!important;z-index:1;max-width:150px;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.cb{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:var(--s2);display:block;margin:auto;color:#fff;font-size:.8rem;line-height:1;padding:0}
+.cb.on{background:var(--up);border-color:var(--up)}
+.cb.fut{opacity:.4}
+.pct{font-weight:600;padding-left:10px;color:var(--up)}
+.hc{width:26px;height:26px;border-radius:6px;border:2px solid transparent;font-size:.72rem;font-weight:600;color:var(--hi);padding:0;display:block;margin:auto}
+.hc.e{background:var(--s2);color:var(--mut)}
+.hc.sel{border-color:var(--acc)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--s2);border-radius:8px;min-width:38px;height:38px;font-weight:600}
+.chip.on{color:var(--hi);border-color:var(--acc)}
+.row{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .t{flex:1;min-width:0}
+.row .t b{display:block;font-weight:500;overflow-wrap:anywhere}
+.row .t small{color:var(--mut)}
+.row.done .t b{text-decoration:line-through;color:var(--mut)}
+.tick{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);background:none;flex:none;color:#fff;font-size:.75rem;padding:0}
+.tick.on{background:var(--up);border-color:var(--up)}
+.badge{font-size:.72rem;font-weight:700;border-radius:6px;padding:3px 8px;color:#fff;flex:none}
+.l-PM{background:var(--pm)}.l-PTM{background:var(--ptm)}.l-MTP{background:var(--mtp);color:#181a20}.l-TMTP{background:var(--tmtp)}
+.late{color:var(--dn)!important;font-weight:500}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+.filters .btn{padding:5px 12px;font-size:.82rem}
+.legend{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 14px;font-size:.8rem;color:var(--mut);margin-top:12px}
+@media(max-width:540px){.legend{grid-template-columns:1fr}.stats{gap:8px}.stat{padding:10px}.stat b{font-size:1.2rem}}
+.empty{color:var(--mut);font-size:.9rem;padding:8px 0}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--mut);margin-bottom:6px}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.ind{margin-bottom:14px}.ind>div:first-child{font-weight:600;margin-bottom:6px}
+svg{width:100%;height:auto;display:block}
+.logo svg{width:26px;height:26px}
+.prog{height:4px;background:var(--s2);border-radius:99px;overflow:hidden;margin:6px 0 10px}.prog i{display:block;height:100%;background:var(--up)}
+</style>
+</head>
+<body>
+<header class="top"><div class="bar">
+  <a class="logo" aria-label="Track"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2L30 16 16 30 2 16z" fill="#84F81A"/><path d="M16 9l5 7-5 7-5-7z" fill="#181A20"/></svg><span>Track</span></a>
+  <nav id="nav" aria-label="Navigasi utama"></nav>
+  <div class="acts"><button class="btn ghost" id="instBtn" data-act="install" hidden>Pasang</button><button class="btn ghost ib" data-act="csv" aria-label="Ekspor data ke CSV" title="Ekspor CSV"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg></button><button class="btn ghost ib" data-act="theme" id="themeBtn" aria-label="Ganti tema" title="Ganti tema"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button></div>
+</div></header>
+<div class="wrap"><main id="main"></main></div>
+
+
+<script>
+/* ---------- Data & util ---------- */
+const KEY='kompas_harian_v1';
+let S={};try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){}
+S=Object.assign({habits:[],checks:{},tasks:[],goals:{weekly:[],monthly:[],yearly:[]},logs:{}},S);
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const dkey=(y,m,d)=>`${y}-${pad(m+1)}-${pad(d)}`;
+const MONTHS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const now=new Date();
+let cur={y:now.getFullYear(),m:now.getMonth()};
+const todayKey=()=>{const t=new Date();return dkey(t.getFullYear(),t.getMonth(),t.getDate())};
+const dim=()=>new Date(cur.y,cur.m+1,0).getDate();
+const elapsed=()=>{const t=new Date(),c=cur.y*12+cur.m,n=t.getFullYear()*12+t.getMonth();return c<n?dim():c===n?t.getDate():0};
+const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+let tab='habit',tf='ALL',ld=todayKey();
+const TABS=[['habit','Habit'],['task','Tugas'],['goal','Tujuan'],['log','Kondisi']];
+const LABELS={PM:'Penting & Mendesak',PTM:'Penting, Tidak Mendesak',MTP:'Mendesak, Tidak Penting',TMTP:'Tidak Mendesak, Tidak Penting'};
+const IND=[['e','Emosi','#e0687a'],['b','Energi Tubuh','#84f81a'],['f','Fokus','#3a8fd9']];
+
+/* ---------- Komponen bersama ---------- */
+const monthBar=()=>`<div class="mbar"><button class="btn ghost" data-act="mon" data-d="-1" aria-label="Bulan sebelumnya">‹</button><strong>${MONTHS[cur.m]} ${cur.y}</strong><button class="btn ghost" data-act="mon" data-d="1" aria-label="Bulan berikutnya">›</button></div>`;
+const heat=v=>`hsl(${(v-1)*14} 62% var(--hl))`;
+
+function chart(series,max,n){
+  const W=640,H=200,L=32,R=10,T=10,B=24,w=W-L-R,h=H-T-B;
+  const x=i=>L+(n<2?0:i*w/(n-1)),y=v=>T+h-(v/max)*h;
+  let g='';
+  [0,.5,1].forEach(f=>{const yy=T+h-f*h;g+=`<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="var(--line)"/><text x="${L-6}" y="${yy+4}" text-anchor="end" font-size="11" fill="var(--mut)">${Math.round(f*max)}</text>`});
+  for(let i=0;i<n;i++)if(i===0||(i+1)%5===0)g+=`<text x="${x(i)}" y="${H-6}" text-anchor="middle" font-size="11" fill="var(--mut)">${i+1}</text>`;
+  series.forEach(s=>{let d='',pen=false,dots='';
+    s.vals.forEach((v,i)=>{if(v==null){pen=false;return}d+=(pen?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1);pen=true;dots+=`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3" fill="${s.color}"/>`});
+    g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>${dots}`});
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Grafik tren bulanan">${g}</svg>`;
+}
+
+/* ---------- 1. Habit ---------- */
+function renderHabit(){
+  const n=dim(),el=elapsed(),H=S.habits,tk=todayKey();
+  const hp=h=>{if(!el)return 0;let c=0;for(let d=1;d<=el;d++)if(S.checks[h.id]?.[dkey(cur.y,cur.m,d)])c++;return Math.round(c/el*100)};
+  const pcts=H.map(hp),overall=pcts.length?Math.round(avg(pcts)):0;
+  const bi=pcts.length?pcts.indexOf(Math.max(...pcts)):-1;
+  const PAL=['#84f81a','#3a8fd9','#e0687a','#ff9f1a','#a77bf3','#2ec4b6','#cbd5e1','#c08457'];
+  const series=H.map((h,i)=>{let c=0;return {name:h.name,color:PAL[i%PAL.length],vals:Array.from({length:n},(_,j)=>{const d=j+1;if(d<=el&&S.checks[h.id]?.[dkey(cur.y,cur.m,d)])c++;return d>el?null:Math.round(c/d*100)})}});
+  let rows=H.map((h,hi)=>`<tr><td class="stick" title="${esc(h.name)}">${esc(h.name)}</td>${Array.from({length:n},(_,i)=>{
+    const k=dkey(cur.y,cur.m,i+1),on=S.checks[h.id]?.[k];
+    return `<td><button class="cb ${on?'on':''} ${i+1>el?'fut':''}" data-act="chk" data-id="${h.id}" data-k="${k}" aria-label="${esc(h.name)} tanggal ${i+1}" aria-pressed="${!!on}">${on?'✓':''}</button></td>`}).join('')}
+    <td class="pct">${pcts[hi]}%</td><td><button class="x" data-act="hdel" data-id="${h.id}" aria-label="Hapus ${esc(h.name)}">✕</button></td></tr>`).join('');
+  const head=`<tr><th class="stick">Habit</th>${Array.from({length:n},(_,i)=>`<th class="${dkey(cur.y,cur.m,i+1)===tk?'today':''}">${i+1}</th>`).join('')}<th>%</th><th></th></tr>`;
+  return `${monthBar()}
+  <div class="stats"><div class="stat"><b>${overall}%</b><span>Keberhasilan bulan ini</span></div>
+  <div class="stat"><b>${H.reduce((a,h)=>a+Object.keys(S.checks[h.id]||{}).filter(k=>k.startsWith(dkey(cur.y,cur.m,1).slice(0,7))).length,0)}</b><span>Total centang</span></div>
+  <div class="stat"><b class="sm">${bi>=0&&pcts[bi]>0?esc(H[bi].name):'-'}</b><span>Habit terkuat</span></div></div>
+  <div class="card"><h2>Habit baru</h2><form class="frm" data-form="habit"><input type="text" name="n" placeholder="Contoh: Baca 20 halaman" maxlength="60" required><button class="btn">Tambah habit</button></form></div>
+  <div class="card"><h2>Checklist harian</h2>${H.length?`<div class="scroll"><table>${head}${rows}</table></div>`:'<p class="empty">Belum ada habit. Tambahkan satu di atas untuk mulai mencentang.</p>'}</div>
+  <div class="card"><h2>Tren keberhasilan per habit</h2>${H.length?`<div class="lg">${series.map(x=>`<span><i style="background:${x.color}"></i>${esc(x.name)}</span>`).join('')}</div>${chart(series,100,n)}<div class="sub">Persentase keberhasilan kumulatif tiap habit sampai tanggal tersebut.</div>`:'<p class="empty">Grafik muncul setelah ada habit.</p>'}</div>`;
+}
+
+/* ---------- 2. Tugas ---------- */
+function renderTask(){
+  const t0=new Date(),all=S.tasks;
+  let list=all.filter(t=>tf==='ALL'||t.label===tf).sort((a,b)=>(a.done-b.done)||a.due.localeCompare(b.due));
+  const late=all.filter(t=>!t.done&&new Date(t.due)<t0).length;
+  const fmt=d=>new Date(d).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});
+  return `<div class="card"><h2>Tugas atau hal penting baru</h2>
+  <form class="frm" data-form="task"><input type="text" name="n" placeholder="Nama tugas" maxlength="100" required>
+  <input type="datetime-local" name="due" required aria-label="Deadline">
+  <select name="label" required aria-label="Prioritas"><option value="" disabled selected>Pilih prioritas</option>${Object.keys(LABELS).map(k=>`<option value="${k}">${k} - ${LABELS[k]}</option>`).join('')}</select>
+  <button class="btn">Simpan tugas</button></form>
+  <div class="legend">${Object.entries(LABELS).map(([k,v])=>`<span><span class="badge l-${k}">${k}</span> ${v}</span>`).join('')}</div></div>
+  <div class="card"><h2>${all.filter(t=>!t.done).length} aktif, ${late} terlambat</h2>
+  <div class="filters">${['ALL',...Object.keys(LABELS)].map(k=>`<button class="btn ${tf===k?'':'ghost'}" data-act="tf" data-f="${k}">${k==='ALL'?'Semua':k}</button>`).join('')}</div>
+  ${list.length?list.map(t=>`<div class="row ${t.done?'done':''}"><button class="tick ${t.done?'on':''}" data-act="tdone" data-id="${t.id}" aria-label="Tandai selesai" aria-pressed="${t.done}">${t.done?'✓':''}</button>
+  <div class="t"><b>${esc(t.name)}</b><small class="${!t.done&&new Date(t.due)<t0?'late':''}">${fmt(t.due)}${!t.done&&new Date(t.due)<t0?' (lewat deadline)':''}</small></div>
+  <span class="badge l-${t.label}">${t.label}</span><button class="x" data-act="tdel" data-id="${t.id}" aria-label="Hapus tugas">✕</button></div>`).join(''):'<p class="empty">Tidak ada tugas di daftar ini. Tambahkan tugas lewat formulir di atas.</p>'}</div>`;
+}
+
+/* ---------- 3. Tujuan ---------- */
+function renderGoal(){
+  const cats=[['weekly','Tujuan mingguan','Fokus minggu ini'],['monthly','Tujuan bulanan','Target bulan ini'],['yearly','Tujuan tahunan','Arah besar tahun ini']];
+  return `<div class="grid3">${cats.map(([k,title,ph])=>{
+    const L=S.goals[k],d=L.filter(g=>g.done).length;
+    return `<div class="card"><h2>${title}</h2><div class="sub">${d} dari ${L.length} selesai</div>
+    <div class="prog"><i style="width:${L.length?d/L.length*100:0}%"></i></div>
+    <form class="frm" data-form="goal" data-g="${k}"><input type="text" name="n" placeholder="${ph}" maxlength="100" required><button class="btn" aria-label="Tambah ${title}">+</button></form>
+    ${L.length?L.map(g=>`<div class="row ${g.done?'done':''}"><button class="tick ${g.done?'on':''}" data-act="gdone" data-g="${k}" data-id="${g.id}" aria-pressed="${g.done}" aria-label="Tandai selesai">${g.done?'✓':''}</button><div class="t"><b>${esc(g.name)}</b></div><button class="x" data-act="gdel" data-g="${k}" data-id="${g.id}" aria-label="Hapus tujuan">✕</button></div>`).join(''):'<p class="empty" style="margin-top:8px">Belum ada tujuan. Tulis satu di atas.</p>'}</div>`}).join('')}</div>`;
+}
+
+/* ---------- 4. Log fisik & mental ---------- */
+function renderLog(){
+  const n=dim(),cl=S.logs[ld]||{};
+  const val=(k,d)=>S.logs[dkey(cur.y,cur.m,d)]?.[k];
+  const dl=new Date(ld+'T00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'});
+  const form=IND.map(([k,name])=>`<div class="ind"><div>${name}${cl[k]?` <span class="sub">(level ${cl[k]})</span>`:''}</div><div class="chips">${Array.from({length:10},(_,i)=>`<button class="chip ${cl[k]===i+1?'on':''}" style="${cl[k]===i+1?'background:'+heat(i+1):''}" data-act="lv" data-i="${k}" data-v="${i+1}" aria-pressed="${cl[k]===i+1}">${i+1}</button>`).join('')}</div></div>`).join('');
+  const head=`<tr><th class="stick"></th>${Array.from({length:n},(_,i)=>`<th class="${dkey(cur.y,cur.m,i+1)===todayKey()?'today':''}">${i+1}</th>`).join('')}<th class="pct">Rata-rata</th></tr>`;
+  const rows=IND.map(([k,name])=>{const vs=Array.from({length:n},(_,i)=>val(k,i+1)).filter(Boolean),a=avg(vs);
+    return `<tr><td class="stick">${name}</td>${Array.from({length:n},(_,i)=>{const v=val(k,i+1),key=dkey(cur.y,cur.m,i+1);
+    return `<td><button class="hc ${v?'':'e'} ${key===ld?'sel':''}" style="${v?'background:'+heat(v):''}" data-act="pick" data-k="${key}" aria-label="${name} tanggal ${i+1}">${v||''}</button></td>`}).join('')}<td class="pct">${a?a.toFixed(1):'-'}</td></tr>`}).join('');
+  const series=IND.map(([k,name,color])=>({name,color,vals:Array.from({length:n},(_,i)=>val(k,i+1)||null)}));
+  return `<div class="card"><h2>Catatan hari ini</h2>
+  <div class="frm" style="margin-bottom:14px;align-items:center"><input type="date" id="ld" value="${ld}" aria-label="Pilih tanggal"><span class="sub">${dl}</span></div>${form}<div class="sub">Pilih level 1 (rendah) sampai 10 (tinggi). Tersimpan otomatis.</div></div>
+  ${monthBar()}
+  <div class="card"><h2>Peta kondisi bulanan</h2><div class="scroll"><table>${head}${rows}</table></div><div class="sub" style="margin-top:8px">Ketuk kotak untuk membuka catatan tanggal tersebut.</div></div>
+  <div class="card"><h2>Tren kondisi</h2><div class="lg">${IND.map(([,nm,c])=>`<span><i style="background:${c}"></i>${nm}</span>`).join('')}</div>${chart(series,10,n)}</div>`;
+}
+
+/* ---------- Render & event ---------- */
+function render(){
+  $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${tab===k?'on':''}" data-act="tab" data-t="${k}">${l}</button>`).join('');
+  $('#main').innerHTML={habit:renderHabit,task:renderTask,goal:renderGoal,log:renderLog}[tab]();
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act,id=b.dataset.id,D=b.dataset;
+  if(a==='theme'){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('kh_theme',t)}catch(x){}return render()}
+  if(a==='csv')return exportCSV();
+  if(a==='install'){if(dp){dp.prompt();dp=null;$('#instBtn').hidden=true}return}
+  if(a==='tab')tab=D.t;
+  else if(a==='mon'){const d=new Date(cur.y,cur.m+ +D.d,1);cur={y:d.getFullYear(),m:d.getMonth()}}
+  else if(a==='chk'){const c=S.checks[id]=S.checks[id]||{};c[D.k]?delete c[D.k]:c[D.k]=1}
+  else if(a==='hdel'){if(!confirm('Hapus habit ini beserta riwayat centangnya?'))return;S.habits=S.habits.filter(h=>h.id!==id);delete S.checks[id]}
+  else if(a==='tf')tf=D.f;
+  else if(a==='tdone'){const t=S.tasks.find(t=>t.id===id);t.done=!t.done}
+  else if(a==='tdel'){S.tasks=S.tasks.filter(t=>t.id!==id)}
+  else if(a==='gdone'){const g=S.goals[D.g].find(g=>g.id===id);g.done=!g.done}
+  else if(a==='gdel'){S.goals[D.g]=S.goals[D.g].filter(g=>g.id!==id)}
+  else if(a==='lv'){const l=S.logs[ld]=S.logs[ld]||{};l[D.i]=l[D.i]===+D.v?undefined:+D.v;if(!l.e&&!l.b&&!l.f)delete S.logs[ld]}
+  else if(a==='pick')ld=D.k;
+  save();render();
+});
+document.addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target,a=f.dataset.form,v=f.elements.n.value.trim();if(!v)return;
+  if(a==='habit')S.habits.push({id:uid(),name:v});
+  if(a==='task')S.tasks.push({id:uid(),name:v,due:f.elements.due.value,label:f.elements.label.value,done:false});
+  if(a==='goal')S.goals[f.dataset.g].push({id:uid(),name:v,done:false});
+  save();render();
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==='ld'&&e.target.value){ld=e.target.value;const d=new Date(ld+'T00:00');cur={y:d.getFullYear(),m:d.getMonth()};render()}
+});
+/* ---------- Ekspor CSV ---------- */
+function exportCSV(){
+  const q=v=>{let s=String(v==null?'':v);if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+  const R=[['Kategori','Nama','Tanggal','Nilai','Keterangan']];
+  S.habits.forEach(h=>{const ks=Object.keys(S.checks[h.id]||{}).sort();if(!ks.length)R.push(['Habit',h.name,'','','Belum ada centang']);ks.forEach(k=>R.push(['Habit',h.name,k,1,'Selesai']))});
+  S.tasks.forEach(t=>R.push(['Tugas',t.name,t.due,t.done?'Selesai':'Belum',t.label]));
+  const GN={weekly:'Tujuan Mingguan',monthly:'Tujuan Bulanan',yearly:'Tujuan Tahunan'};
+  Object.keys(GN).forEach(k=>S.goals[k].forEach(g=>R.push([GN[k],g.name,'',g.done?'Selesai':'Belum',''])));
+  Object.keys(S.logs).sort().forEach(d=>IND.forEach(([k,nm])=>{if(S.logs[d][k])R.push(['Kondisi',nm,d,S.logs[d][k],'Level 1-10'])}));
+  const blob=new Blob(['\ufeff'+R.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='track-data-'+todayKey()+'.csv';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+}
+
+/* ---------- Pasang ke layar utama (PWA) ---------- */
+let dp=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;$('#instBtn').hidden=false});
+(function(){try{
+  const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');
+  x.fillStyle='#0b0e11';x.fillRect(0,0,512,512);
+  x.fillStyle='#84f81a';x.beginPath();x.moveTo(256,96);x.lineTo(416,256);x.lineTo(256,416);x.lineTo(96,256);x.closePath();x.fill();
+  x.fillStyle='#0b0e11';x.beginPath();x.moveTo(256,176);x.lineTo(312,256);x.lineTo(256,336);x.lineTo(200,256);x.closePath();x.fill();
+  const png=c.toDataURL('image/png');
+  [['apple-touch-icon'],['icon']].forEach(([r])=>{const l=document.createElement('link');l.rel=r;l.href=png;document.head.appendChild(l)});
+  if(location.protocol.indexOf('http')===0){
+    const m={name:'Track',short_name:'Track',display:'standalone',background_color:'#0b0e11',theme_color:'#0b0e11',start_url:location.href.split('#')[0],scope:location.href.replace(/[^/]*$/,''),icons:[{src:png,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+    const ml=document.createElement('link');ml.rel='manifest';
+    ml.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));document.head.appendChild(ml);
+  }
+}catch(e){}})();
+
+render();
+</script>
+</body>
+</html>
